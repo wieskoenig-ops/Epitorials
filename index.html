@@ -1,2 +1,1098 @@
-hello 
-world
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epitorials — Was würdest du tun?</title>
+  <meta name="description" content="Epitorials ist ein KI-gestütztes Unterrichtsformat für Geschichte und Deutsch. Schülerinnen und Schüler schlüpfen in historische Rollen und treffen echte Entscheidungen.">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="256x256" href="favicon-256x256.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blau: #1B4F8A;
+      --blau-dunkel: #143d6b;
+      --gruen: #8FB5A0;
+      --gruen-hell: #F0F5F2;
+      --schwarz: #1A1A1A;
+      --grau: #5a6472;
+      --weiss: #FFFFFF;
+      --radius: 4px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--schwarz);
+      background: var(--weiss);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(143,181,160,0.25);
+      z-index: 100;
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--blau);
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grau);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--blau); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gruen);
+      margin-bottom: 36px;
+    }
+
+    .hero-frage {
+      font-size: clamp(52px, 9vw, 100px);
+      font-weight: 700;
+      color: var(--blau);
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      margin-bottom: 52px;
+    }
+
+    .hero-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--gruen);
+      margin: 0 auto 40px;
+    }
+
+    .hero-erklaerung {
+      font-size: 19px;
+      font-weight: 300;
+      color: var(--schwarz);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-zitat {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--grau);
+      max-width: 460px;
+      margin: 0 auto 56px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--blau);
+      color: var(--weiss);
+      padding: 14px 32px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover {
+      background: var(--blau-dunkel);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--blau);
+      padding: 14px 32px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid var(--blau);
+      border-radius: var(--radius);
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--blau);
+      color: var(--weiss);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      color: var(--gruen);
+      opacity: 0.6;
+    }
+
+    /* SECTIONS */
+    section { padding: 96px 40px; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gruen);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--blau);
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+      margin-bottom: 20px;
+    }
+
+    .section-lead {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--grau);
+      max-width: 620px;
+      margin-bottom: 52px;
+      line-height: 1.65;
+    }
+
+    /* WIE ES FUNKTIONIERT */
+    #wie { background: var(--gruen-hell); }
+
+    .schritte {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .schritt {
+      padding: 32px 28px;
+      background: var(--weiss);
+      border-radius: var(--radius);
+      border-top: 3px solid var(--gruen);
+    }
+
+    .schritt-nummer {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gruen);
+      margin-bottom: 16px;
+    }
+
+    .schritt-titel {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blau);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .schritt-text {
+      font-size: 15px;
+      color: var(--grau);
+      line-height: 1.7;
+    }
+
+    /* SZENARIEN */
+    #szenarien { background: var(--weiss); }
+
+    .szenarien-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .szenario-karte {
+      border: 1px solid rgba(143,181,160,0.35);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .szenario-karte:hover {
+      border-color: var(--gruen);
+      box-shadow: 0 4px 20px rgba(27,79,138,0.07);
+    }
+
+    .szenario-fach {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gruen);
+      margin-bottom: 10px;
+    }
+
+    .szenario-titel {
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--blau);
+      margin-bottom: 6px;
+    }
+
+    .szenario-klasse {
+      font-size: 13px;
+      color: var(--grau);
+      margin-bottom: 14px;
+    }
+
+    .szenario-beschreibung {
+      font-size: 15px;
+      color: var(--schwarz);
+      line-height: 1.65;
+    }
+
+    .szenario-karte.mint {
+      border-style: dashed;
+      opacity: 0.65;
+    }
+
+    /* LEHRER */
+    #lehrer { background: var(--gruen-hell); }
+
+    .lehrer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .lehrer-info p {
+      font-size: 16px;
+      color: var(--schwarz);
+      margin-bottom: 20px;
+      line-height: 1.75;
+    }
+
+    .modi-liste {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modus {
+      padding: 20px 24px;
+      background: var(--weiss);
+      border-left: 3px solid var(--gruen);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    .modus-titel {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blau);
+      margin-bottom: 5px;
+    }
+
+    .modus-text {
+      font-size: 14px;
+      color: var(--grau);
+      line-height: 1.6;
+    }
+
+    /* DEMO */
+    #demo {
+      background: var(--blau);
+      padding: 88px 40px;
+    }
+
+    #demo .section-eyebrow { color: var(--gruen); }
+    #demo .section-title { color: var(--weiss); }
+    #demo .section-lead { color: rgba(255,255,255,0.65); }
+
+    .demo-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .demo-kontext {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(143,181,160,0.3);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      margin-bottom: 36px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
+    }
+
+    .demo-kontext strong {
+      color: var(--gruen);
+      font-weight: 600;
+    }
+
+    .runde { display: none; }
+
+    .runde.aktiv {
+      display: block;
+      animation: einblenden 0.4s ease;
+    }
+
+    @keyframes einblenden {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .runden-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .runden-nummer {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gruen);
+      white-space: nowrap;
+    }
+
+    .runden-fortschritt {
+      flex: 1;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .fortschritt-balken {
+      height: 100%;
+      background: var(--gruen);
+      border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+
+    .tagestext {
+      font-size: 16px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 32px;
+      padding: 26px 28px;
+      background: rgba(255,255,255,0.04);
+      border-radius: var(--radius);
+      font-weight: 300;
+    }
+
+    .frage-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gruen);
+      margin-bottom: 14px;
+    }
+
+    .entscheidungen {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .entscheidung-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: var(--radius);
+      padding: 15px 20px;
+      color: rgba(255,255,255,0.82);
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      line-height: 1.5;
+    }
+
+    .entscheidung-btn:hover {
+      background: rgba(143,181,160,0.14);
+      border-color: var(--gruen);
+      color: var(--weiss);
+    }
+
+    .entscheidung-btn.gewaehlt {
+      background: rgba(143,181,160,0.18);
+      border-color: var(--gruen);
+      color: var(--weiss);
+    }
+
+    .begruendung-block {
+      display: none;
+      margin-top: 6px;
+    }
+
+    .begruendung-block.sichtbar {
+      display: block;
+      animation: einblenden 0.3s ease;
+    }
+
+    .begruendung-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 8px;
+    }
+
+    .begruendung-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      color: var(--weiss);
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      resize: none;
+      min-height: 78px;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+
+    .begruendung-input:focus {
+      outline: none;
+      border-color: var(--gruen);
+    }
+
+    .begruendung-input::placeholder { color: rgba(255,255,255,0.22); }
+
+    .weiter-btn {
+      margin-top: 14px;
+      background: var(--gruen);
+      color: var(--blau-dunkel);
+      border: none;
+      border-radius: var(--radius);
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: none;
+    }
+
+    .weiter-btn.sichtbar {
+      display: inline-block;
+      animation: einblenden 0.3s ease;
+    }
+
+    .weiter-btn:hover {
+      background: #a5c7b5;
+      transform: translateY(-1px);
+    }
+
+    .ki-antwort {
+      display: none;
+      margin-top: 22px;
+      padding: 22px 26px;
+      background: rgba(255,255,255,0.04);
+      border-left: 3px solid var(--gruen);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    .ki-antwort.sichtbar {
+      display: block;
+      animation: einblenden 0.5s ease;
+    }
+
+    .ki-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gruen);
+      margin-bottom: 10px;
+    }
+
+    .ki-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* AUSWERTUNG */
+    .auswertung { display: none; }
+
+    .auswertung.sichtbar {
+      display: block;
+      animation: einblenden 0.5s ease;
+    }
+
+    .auswertung-titel {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--weiss);
+      margin-bottom: 6px;
+    }
+
+    .auswertung-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 28px;
+    }
+
+    .figuren-vergleich {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .figur-zeile {
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .figur-zeile.spieler {
+      border: 1px solid rgba(143,181,160,0.45);
+    }
+
+    .figur-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gruen);
+      min-width: 110px;
+    }
+
+    .figur-zeile.spieler .figur-name { color: var(--weiss); }
+
+    .figur-entscheidungen {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+    }
+
+    .ki-abschluss {
+      padding: 22px 26px;
+      background: rgba(255,255,255,0.04);
+      border-left: 3px solid var(--gruen);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .neu-starten-btn {
+      margin-top: 24px;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      padding: 10px 22px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .neu-starten-btn:hover {
+      color: var(--weiss);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    /* KONTAKT */
+    #kontakt { background: var(--weiss); }
+
+    .kontakt-inhalt { max-width: 540px; }
+
+    .kontakt-inhalt p {
+      font-size: 17px;
+      color: var(--grau);
+      margin-bottom: 32px;
+      line-height: 1.75;
+    }
+
+    .kontakt-email {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--blau);
+      text-decoration: none;
+      border-bottom: 2px solid var(--gruen);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+
+    .kontakt-email:hover { color: var(--blau-dunkel); }
+
+    /* FOOTER */
+    footer {
+      background: var(--gruen-hell);
+      padding: 28px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--grau);
+      border-top: 1px solid rgba(143,181,160,0.25);
+    }
+
+    footer span { color: var(--blau); font-weight: 600; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      section, #demo { padding: 64px 20px; }
+      .schritte, .szenarien-grid, .lehrer-grid { grid-template-columns: 1fr; gap: 20px; }
+      .hero { padding: 100px 20px 60px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Epitorials</a>
+  <ul class="nav-links">
+    <li><a href="#wie">So funktioniert es</a></li>
+    <li><a href="#szenarien">Szenarien</a></li>
+    <li><a href="#lehrer">Für Lehrkräfte</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-eyebrow">Ein Unterrichtsformat für Geschichte und Deutsch</div>
+  <h1 class="hero-frage">Was würdest<br>du tun?</h1>
+  <div class="hero-divider"></div>
+  <p class="hero-erklaerung">
+    Epitorials versetzt Schülerinnen und Schüler in historische und literarische Situationen — und lässt sie selbst entscheiden. Nicht als Spiel. Als Unterricht.
+  </p>
+  <p class="hero-zitat">
+    „Es ist eine Sache, über Moral zu lesen. Eine andere, selber zu entscheiden."
+  </p>
+  <div class="hero-buttons">
+    <a href="#demo" class="btn-primary">Demo spielen</a>
+    <a href="#kontakt" class="btn-secondary">Gespräch anfragen</a>
+  </div>
+  <div class="hero-scroll">↓</div>
+</section>
+
+<!-- WIE ES FUNKTIONIERT -->
+<section id="wie">
+  <div class="container">
+    <div class="section-eyebrow">Das Format</div>
+    <h2 class="section-title">Drei Phasen. Zehn Tage. Eine Frage.</h2>
+    <p class="section-lead">
+      Jedes Epitorial läuft nach demselben Grundprinzip: Vorbereitung, tägliche Entscheidungen, gemeinsame Auswertung.
+    </p>
+    <div class="schritte">
+      <div class="schritt">
+        <div class="schritt-nummer">Phase 1</div>
+        <div class="schritt-titel">Vorbereitungsstunde</div>
+        <p class="schritt-text">Die Lehrkraft stellt das Format vor. Das System weist Rollen automatisch zu — jede Schülerin, jeder Schüler erhält eine eigene Figur mit Geschichte, Haltung und Konflikt.</p>
+      </div>
+      <div class="schritt">
+        <div class="schritt-nummer">Phase 2</div>
+        <div class="schritt-titel">10 Tage, 15 Minuten täglich</div>
+        <p class="schritt-text">Jeden Tag: einen kurzen Situationstext lesen, eine Entscheidung treffen, eine Begründung schreiben. Als Hausaufgabe, online, in der eigenen Rolle. Was die anderen entscheiden — niemand weiß es.</p>
+      </div>
+      <div class="schritt">
+        <div class="schritt-nummer">Phase 3</div>
+        <div class="schritt-titel">Auswertungsstunde</div>
+        <p class="schritt-text">Die Lehrkraft legt alle Entscheidungen offen. Fünf Schülerinnen haben dieselbe Figur gespielt — und völlig unterschiedlich entschieden. Warum? Das ist der Unterricht.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SZENARIEN -->
+<section id="szenarien">
+  <div class="container">
+    <div class="section-eyebrow">Verfügbare Epitorials</div>
+    <h2 class="section-title">Jedes Szenario ist ein Epitorial.</h2>
+    <p class="section-lead">
+      Vollständig ausgearbeitete Szenarien mit Figurenprofilen, Tagestext-Sequenzen und Unterrichtsmaterialien.
+    </p>
+    <div class="szenarien-grid">
+      <div class="szenario-karte">
+        <div class="szenario-fach">Deutsch · Klasse 11–12</div>
+        <div class="szenario-titel">Der Besuch der alten Dame</div>
+        <div class="szenario-klasse">Friedrich Dürrenmatt</div>
+        <p class="szenario-beschreibung">Güllen, irgendwann. Clara Zachanassian bietet eine Milliarde — und verlangt dafür ein Leben. Als Bürgermeister, Lehrer, Pfarrer oder Händlerin steht man vor derselben Frage: Was hat Preis, was hat Würde?</p>
+      </div>
+      <div class="szenario-karte">
+        <div class="szenario-fach">Geschichte · Klasse 10–11</div>
+        <div class="szenario-titel">Weimar 1932</div>
+        <div class="szenario-klasse">Die letzten Monate der Republik</div>
+        <p class="szenario-beschreibung">Januar 1932. In Bochum, Weimar, München, Berlin, Königsberg — fünf Menschen in fünf verschiedenen Welten erleben denselben Zerfall. Und treffen täglich Entscheidungen, die sie nicht als historisch erkennen.</p>
+      </div>
+      <div class="szenario-karte">
+        <div class="szenario-fach">Geschichte · Klasse 9–10</div>
+        <div class="szenario-titel">Versailles 1685</div>
+        <div class="szenario-klasse">Der Hof Ludwigs XIV.</div>
+        <p class="szenario-beschreibung">Am Hof des Sonnenkönigs entscheidet Nähe über Macht, Schweigen über Überleben. Fünf Figuren zwischen Gunst, Schuld und dem Edikt von Fontainebleau.</p>
+      </div>
+      <div class="szenario-karte mint">
+        <div class="szenario-fach">MINT · In Entwicklung</div>
+        <div class="szenario-titel">Physik, Biologie, Mathematik</div>
+        <div class="szenario-klasse">Göttingen 1927 · Darwin 1859 · Turing 1936</div>
+        <p class="szenario-beschreibung">Epitorials für MINT-Fächer: Entdeckungsmomente der Wissenschaftsgeschichte, in denen Erkenntnis und Entscheidung untrennbar sind. Demnächst verfügbar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FÜR LEHRER -->
+<section id="lehrer">
+  <div class="container">
+    <div class="section-eyebrow">Für Lehrkräfte</div>
+    <h2 class="section-title">Kein Mehraufwand. Ein anderes Gespräch.</h2>
+    <div class="lehrer-grid">
+      <div class="lehrer-info">
+        <p>
+          Epitorials ersetzt keine Unterrichtsvorbereitung — es verändert, was danach im Klassenzimmer möglich ist. Schülerinnen und Schüler kommen zur Auswertungsstunde mit eigenen Entscheidungen. Mit eigenen Begründungen. Und mit der Frage, warum ihre Mitschülerin in derselben Lage anders gehandelt hat.
+        </p>
+        <p>
+          Der Zeitaufwand ist überschaubar: eine Vorbereitungsstunde, zehn mal fünfzehn Minuten Hausaufgabe, eine Auswertungsstunde. Das Format passt in den regulären Stundenplan — kein Projekttag, keine Sondertermine.
+        </p>
+        <p>
+          Alle Szenarien sind lehrplangebunden. Dürrenmatt für Deutsch 11/12, Weimarer Republik für Geschichte 10/11. Die Materialien werden als vollständiges Paket bereitgestellt.
+        </p>
+      </div>
+      <div>
+        <ul class="modi-liste">
+          <li class="modus">
+            <div class="modus-titel">Beobachter</div>
+            <p class="modus-text">Die Lehrkraft verfolgt die täglichen Entscheidungen in Echtzeit. Das System läuft eigenständig.</p>
+          </li>
+          <li class="modus">
+            <div class="modus-titel">Dramaturg</div>
+            <p class="modus-text">An drei bis vier vordefinierten Punkten greift die Lehrkraft ein — eine Wendung, eine neue Information, ein Ereignis, das den Verlauf verändert.</p>
+          </li>
+          <li class="modus">
+            <div class="modus-titel">Mitspieler</div>
+            <p class="modus-text">Die Lehrkraft übernimmt selbst eine Figur und entscheidet mit — sichtbar für alle erst in der Auswertung.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="demo-container">
+    <div class="section-eyebrow">Spielbare Demo</div>
+    <h2 class="section-title">Drei Tage als Bürgermeister.</h2>
+    <p class="section-lead">
+      Drei Entscheidungen. Fünf Minuten. Ein Eindruck davon, was Epitorials im Klassenzimmer bedeutet.
+    </p>
+
+    <div class="demo-kontext">
+      <strong>Ihre Rolle:</strong> Der Bürgermeister von Güllen.<br>
+      <strong>Szenario:</strong> Der Besuch der alten Dame — Friedrich Dürrenmatt.<br>
+      <strong>Situation:</strong> Clara Zachanassian, einst das ärmste Mädchen der Stadt, ist als reichste Frau der Welt zurückgekehrt.
+    </div>
+
+    <!-- RUNDE 1 -->
+    <div class="runde aktiv" id="runde-1">
+      <div class="runden-header">
+        <div class="runden-nummer">Tag 1 von 3</div>
+        <div class="runden-fortschritt"><div class="fortschritt-balken" style="width: 33%"></div></div>
+      </div>
+      <div class="tagestext">
+        Der Zug aus Zürich hat Verspätung. Auf dem Bahnhof haben sich fast alle versammelt — die Stadträte im besten Anzug, der Männerchor, die Feuerwehr. Güllen braucht die Frau. Die Fabrik steht leer, die Kassen auch. Clara Zachanassian war einmal eines von euch. Jetzt soll sie retten, was noch zu retten ist.<br><br>
+        Sie steigen aus dem Wagen, bevor der Zug hält. Sie sind immer noch dieselbe Person, die diese Stadt kennt. Oder glauben Sie das zumindest.
+      </div>
+      <div class="frage-label">Ihre Entscheidung</div>
+      <div class="entscheidungen">
+        <button class="entscheidung-btn" onclick="waehle(1, 'A', this)">Sie empfangen Clara Zachanassian herzlich und öffentlich — als Tochter der Stadt, die heimgekehrt ist.</button>
+        <button class="entscheidung-btn" onclick="waehle(1, 'B', this)">Sie empfangen sie korrekt, aber ohne Überschwang. Würde, keine Bedürftigkeit.</button>
+        <button class="entscheidung-btn" onclick="waehle(1, 'C', this)">Sie warten ab, was sie sagt. Erst dann entscheiden Sie, wie Sie sich verhalten.</button>
+      </div>
+      <div class="begruendung-block" id="begruendung-1">
+        <div class="begruendung-label">Begründen Sie in zwei Sätzen</div>
+        <textarea class="begruendung-input" id="text-1" placeholder="Was bewegt Sie zu dieser Entscheidung?"></textarea>
+        <button class="weiter-btn sichtbar" onclick="zeigAntwort(1)">Weiter →</button>
+      </div>
+      <div class="ki-antwort" id="antwort-1"></div>
+    </div>
+
+    <!-- RUNDE 2 -->
+    <div class="runde" id="runde-2">
+      <div class="runden-header">
+        <div class="runden-nummer">Tag 2 von 3</div>
+        <div class="runden-fortschritt"><div class="fortschritt-balken" style="width: 66%"></div></div>
+      </div>
+      <div class="tagestext">
+        Die Nachricht hat sich über Nacht verbreitet. Clara Zachanassian bietet der Stadt eine Milliarde — unter einer Bedingung. Sie will Alfred Ill. Tot. Er hat einst gegen sie ausgesagt, als sie jung war und er schuldig. Güllen könnte gerettet werden. Ill ist Ihr alter Freund. Und Ihr schärfster Konkurrent bei der nächsten Bürgermeisterwahl.<br><br>
+        Der Stadtrat wartet auf Ihre Haltung. Die Stadt auch.
+      </div>
+      <div class="frage-label">Ihre Entscheidung</div>
+      <div class="entscheidungen">
+        <button class="entscheidung-btn" onclick="waehle(2, 'A', this)">Sie lehnen das Angebot öffentlich und klar ab. Güllen verkauft keine Menschenleben.</button>
+        <button class="entscheidung-btn" onclick="waehle(2, 'B', this)">Sie vertagen. Die Stadt braucht Zeit — und Zeit bedeutet noch keine Entscheidung.</button>
+        <button class="entscheidung-btn" onclick="waehle(2, 'C', this)">Sie sagen nichts Öffentliches, aber lassen intern durchblicken, dass ein Weg gefunden werden könnte.</button>
+      </div>
+      <div class="begruendung-block" id="begruendung-2">
+        <div class="begruendung-label">Begründen Sie in zwei Sätzen</div>
+        <textarea class="begruendung-input" id="text-2" placeholder="Was bewegt Sie zu dieser Entscheidung?"></textarea>
+        <button class="weiter-btn sichtbar" onclick="zeigAntwort(2)">Weiter →</button>
+      </div>
+      <div class="ki-antwort" id="antwort-2"></div>
+    </div>
+
+    <!-- RUNDE 3 -->
+    <div class="runde" id="runde-3">
+      <div class="runden-header">
+        <div class="runden-nummer">Tag 3 von 3</div>
+        <div class="runden-fortschritt"><div class="fortschritt-balken" style="width: 100%"></div></div>
+      </div>
+      <div class="tagestext">
+        Eine Woche ist vergangen. Ill kauft auf Pump — alle kaufen auf Pump. Neue Schuhe, neue Jacken, neues Fleisch. Die Stadt tut so, als wäre die Milliarde schon da. Als wäre die Entscheidung schon gefallen. Heute Abend kommt der Stadtrat zusammen. Heinrich Schell, Ihr Verbündeter seit Jahren, hat Ihnen heute Morgen ausgerichtet, er werde für die Annahme stimmen. Er war nicht der Einzige, der angerufen hat.<br><br>
+        Sie sitzen am Kopfende des Tisches. Die Abstimmung beginnt in einer Stunde.
+      </div>
+      <div class="frage-label">Ihre Entscheidung</div>
+      <div class="entscheidungen">
+        <button class="entscheidung-btn" onclick="waehle(3, 'A', this)">Sie halten stand. Sie sprechen sich gegen die Annahme aus — auch wenn Sie überstimmt werden.</button>
+        <button class="entscheidung-btn" onclick="waehle(3, 'B', this)">Sie enthalten sich. Die Verantwortung soll die Stadt tragen, nicht Sie allein.</button>
+        <button class="entscheidung-btn" onclick="waehle(3, 'C', this)">Sie stimmen zu. Güllen braucht die Milliarde. Und Ill hat damals Unrecht getan.</button>
+      </div>
+      <div class="begruendung-block" id="begruendung-3">
+        <div class="begruendung-label">Begründen Sie in zwei Sätzen</div>
+        <textarea class="begruendung-input" id="text-3" placeholder="Was bewegt Sie zu dieser Entscheidung?"></textarea>
+        <button class="weiter-btn sichtbar" onclick="zeigAntwort(3)">Zur Auswertung →</button>
+      </div>
+      <div class="ki-antwort" id="antwort-3"></div>
+    </div>
+
+    <!-- AUSWERTUNG -->
+    <div class="auswertung" id="auswertung">
+      <div class="auswertung-titel">Die anderen haben auch gespielt.</div>
+      <div class="auswertung-sub">So haben drei weitere Figuren in Ihrer Klasse entschieden — in derselben Lage.</div>
+      <div class="figuren-vergleich" id="vergleich-liste"></div>
+      <div class="ki-abschluss" id="abschluss-text"></div>
+      <button class="neu-starten-btn" onclick="neuStarten()">Von vorn beginnen</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt">
+  <div class="container">
+    <div class="kontakt-inhalt">
+      <div class="section-eyebrow">Kontakt</div>
+      <h2 class="section-title">Gespräch anfragen.</h2>
+      <p>
+        Epitorials befindet sich in der Pilotphase. Wir sprechen gerne mit Lehrkräften, Fachschaften und Schulleitungen, die das Format im Unterricht erproben möchten.
+      </p>
+      <a href="mailto:read.me@web.de" class="kontakt-email">read.me@web.de</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Epitorials</span> — Was würdest du tun? &nbsp;·&nbsp; © 2026
+</footer>
+
+<script>
+  const antworten = {
+    1: {
+      A: "Sie schüttelten die Hand, die Sie gar nicht mehr so genau sahen. Die Menge applaudierte. Hinter Ihnen hörten Sie, wie der Männerchor zu früh einsetzte und wieder aufhörte. Clara Zachanassian lächelte — das erste Lächeln seit ihrer Ankunft.",
+      B: "Sie traten vor, korrekt, die Hand ausgestreckt. Sie sagten das Richtige. Clara Zachanassian sah Sie an, als würde sie etwas messen. Dann nickte sie — knapp, fast unmerklich.",
+      C: "Sie warteten. Alle warteten. Clara Zachanassian stieg aus und sah sich um, als hätte sie alle Zeit der Welt. Dann: \u201EIch bin zur\u00FCck.\u201C Mehr nicht. Und Sie standen da, noch immer ohne Entscheidung."
+    },
+    2: {
+      A: "Sie traten vor das Rathaus. Die Menge schwieg. Jemand hustete. Dann: zögerlicher Applaus von drei, vier Händen. Ill stand am Rand und sah Sie an. In seinem Blick — war es Dankbarkeit? Oder schon die Ahnung, dass Sie es nicht durchhalten würden?",
+      B: "Der Stadtrat verstand. Vertagen heißt nicht Nein. Auf dem Weg nach Hause kaufte Schell neue Schuhe. Sie sahen es und sagten nichts.",
+      C: "Noch vor dem Abend hatte es sich herumgesprochen. Nicht was Sie gesagt hatten — sondern was Sie nicht gesagt hatten. Ill rief nicht an. Vielleicht wusste er es schon."
+    },
+    3: {
+      A: "Sie sprachen. Die Räte sahen auf den Tisch. Dann stimmten sie ab. Sieben zu eins. Sie fuhren allein nach Hause. Im Radio sagten sie, Güllen habe eine schwere Entscheidung getroffen.",
+      B: "Ihre Enthaltung wurde protokolliert. In der Zeitung stand später: einstimmig. Stimmenthaltungen zählen nicht als Stimmen. Sie hatten nicht gestimmt. Aber Ill war trotzdem tot.",
+      C: "Sie hoben die Hand. Es dauerte eine Sekunde — oder sehr viel länger. Auf dem Heimweg rechneten Sie: was die Milliarde für die Schulen bedeutete, für die Straßen, für die Kinder. Es stimmte alles. Und trotzdem schliefen Sie nicht."
+    }
+  };
+
+  const simulierteEntscheidungen = [
+    { name: "Der Lehrer",     tage: ["Herzlicher Empfang", "Öffentliche Ablehnung", "Enthaltung"] },
+    { name: "Der Pfarrer",    tage: ["Korrekter Empfang",  "Vertagen",               "Zustimmung"] },
+    { name: "Die Händlerin",  tage: ["Abwarten",           "Keine öffentliche Haltung", "Zustimmung"] }
+  ];
+
+  const abschlussTexte = {
+    A: "Drei von vier haben am Ende zugestimmt. Sie nicht. Das ist kein besseres Ergebnis — es ist ein anderes. In der echten Auswertungsstunde würden jetzt zwanzig Schülerinnen und Schüler ihre eigenen Entscheidungen auf dem Tisch haben. Und die Frage wäre nicht: Wer hat recht? Sondern: Wie kommt man dahin?",
+    B: "Sie haben sich enthalten. Im Protokoll steht: einstimmig. Das ist keine Lücke — das ist eine der präzisesten Aussagen, die Dürrenmatt über Mitverantwortung macht. In der Auswertungsstunde wird jemand fragen: Ist Enthaltung überhaupt eine Entscheidung?",
+    C: "Sie haben zugestimmt. Wie die meisten. Das macht es nicht einfacher — es macht es interessanter. In der Auswertungsstunde sieht die Klasse, wer wann gekippt ist und warum. Nicht die Entscheidung zählt. Die Begründung."
+  };
+
+  const meineWahlen = {};
+
+  function waehle(runde, option, btn) {
+    const buttons = btn.closest('.entscheidungen').querySelectorAll('.entscheidung-btn');
+    buttons.forEach(b => b.classList.remove('gewaehlt'));
+    btn.classList.add('gewaehlt');
+    meineWahlen[runde] = { option, text: btn.textContent.trim() };
+    document.getElementById('begruendung-' + runde).classList.add('sichtbar');
+  }
+
+  function zeigAntwort(runde) {
+    const wahl = meineWahlen[runde];
+    if (!wahl) return;
+
+    const antwortDiv = document.getElementById('antwort-' + runde);
+    antwortDiv.innerHTML = '<div class="ki-label">Was geschieht</div><div class="ki-text">' + antworten[runde][wahl.option] + '</div>';
+    antwortDiv.classList.add('sichtbar');
+
+    const weiterBtn = document.querySelector('#runde-' + runde + ' .weiter-btn');
+    if (weiterBtn) weiterBtn.style.display = 'none';
+
+    if (runde < 3) {
+      setTimeout(function() {
+        document.getElementById('runde-' + runde).classList.remove('aktiv');
+        const naechste = document.getElementById('runde-' + (runde + 1));
+        naechste.classList.add('aktiv');
+        naechste.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 2400);
+    } else {
+      setTimeout(zeigAuswertung, 2400);
+    }
+  }
+
+  function zeigAuswertung() {
+    document.getElementById('runde-3').classList.remove('aktiv');
+    const auswertung = document.getElementById('auswertung');
+    const liste = document.getElementById('vergleich-liste');
+    liste.innerHTML = '';
+
+    // Spieler-Zeile
+    const spielerZeile = document.createElement('div');
+    spielerZeile.className = 'figur-zeile spieler';
+    const t = [1,2,3].map(function(r) {
+      return meineWahlen[r] ? meineWahlen[r].text.substring(0, 55) + '…' : '–';
+    });
+    spielerZeile.innerHTML = '<div class="figur-name">Sie (Bürgermeister)</div><div class="figur-entscheidungen">Tag 1: ' + t[0] + '<br>Tag 2: ' + t[1] + '<br>Tag 3: ' + t[2] + '</div>';
+    liste.appendChild(spielerZeile);
+
+    // Simulierte Figuren
+    simulierteEntscheidungen.forEach(function(figur) {
+      const zeile = document.createElement('div');
+      zeile.className = 'figur-zeile';
+      zeile.innerHTML = '<div class="figur-name">' + figur.name + '</div><div class="figur-entscheidungen">Tag 1: ' + figur.tage[0] + '<br>Tag 2: ' + figur.tage[1] + '<br>Tag 3: ' + figur.tage[2] + '</div>';
+      liste.appendChild(zeile);
+    });
+
+    const letzteWahl = meineWahlen[3] ? meineWahlen[3].option : 'C';
+    document.getElementById('abschluss-text').textContent = abschlussTexte[letzteWahl];
+
+    auswertung.classList.add('sichtbar');
+    auswertung.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function neuStarten() {
+    Object.keys(meineWahlen).forEach(function(k) { delete meineWahlen[k]; });
+
+    [1,2,3].forEach(function(r) {
+      const runde = document.getElementById('runde-' + r);
+      runde.querySelectorAll('.entscheidung-btn').forEach(function(b) { b.classList.remove('gewaehlt'); });
+      const bb = document.getElementById('begruendung-' + r);
+      bb.classList.remove('sichtbar');
+      const ti = document.getElementById('text-' + r);
+      if (ti) ti.value = '';
+      const aa = document.getElementById('antwort-' + r);
+      aa.classList.remove('sichtbar');
+      aa.innerHTML = '';
+      const wb = runde.querySelector('.weiter-btn');
+      if (wb) wb.style.display = '';
+      runde.classList.remove('aktiv');
+    });
+
+    document.getElementById('auswertung').classList.remove('sichtbar');
+    document.getElementById('vergleich-liste').innerHTML = '';
+    document.getElementById('abschluss-text').textContent = '';
+
+    document.getElementById('runde-1').classList.add('aktiv');
+    document.getElementById('demo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+
+</body>
+</html>
